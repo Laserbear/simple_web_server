@@ -28,7 +28,7 @@ def serialize(packet_dict):
     res += key + ": " + packet_dict['headers'][key] + "\r\n"
   res += "\r\n "
   if "body" in packet_dict:
-    res += packet_dict['body']
+    res += str(packet_dict['body'])
   return res
 
 def extract_path_and_query(request):
@@ -47,6 +47,8 @@ def app(request):
     response['body'] = "Hello World"
   elif request['path'] == "/json":
     response['body'] = request
+  elif request['path'] == "/memes":
+    response['body'] = "Spicy Pesi\nhttp://cachemonet.com/\n"
   else:
     response['body'] = "Not Found"
   return response
@@ -69,7 +71,7 @@ def before(app, middle):
 sock = socket.socket()
 sock.bind(('localhost', 8080))
 sock.listen(1)
-app = before(app, extract_path_and_query)
+#app = before(app, extract_path_and_query)
 while True:
   ret, addr = sock.accept()
   print ret
